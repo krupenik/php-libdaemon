@@ -38,11 +38,11 @@ abstract class Daemon extends Worker
             unlink($this->config["pidfile"]);
         }
 
-        parent::shutdown();        
+        parent::shutdown();
     }
 
     protected function register_signals()
-    {        
+    {
         parent::register_signals();
 
         pcntl_signal(SIGHUP, array(&$this, "configure"));

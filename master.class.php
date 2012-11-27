@@ -32,13 +32,13 @@ abstract class Master extends Daemon
             }
             else {
                 $this->children[$pid] = $pid;
-                
+
                 if ($this->config["debug"]) {
                     $this->log(sprintf("spawned child: %d, total children count: %d", $pid, count($this->children)));
                 }
             }
         }
-        
+
         sleep(1); // 1 should be hardcoded because of signal dispatching
     }
 
@@ -60,7 +60,7 @@ abstract class Master extends Daemon
             unset($this->children[$pid]);
         }
     }
-    
+
     protected function terminate_children()
     {
         foreach ($this->children as $pid => $data) {

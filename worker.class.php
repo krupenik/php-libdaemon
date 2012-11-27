@@ -7,7 +7,7 @@ abstract class Worker
     {
         $this->config = $config;
         $this->running = true;
-        
+
         $this->after_construct();
     }
 
@@ -28,8 +28,8 @@ abstract class Worker
 
     protected function stop()
     {
-        $this->running = false;        
-    }    
+        $this->running = false;
+    }
 
     protected function after_construct() { }
     protected function after_register_signals() { }
@@ -45,6 +45,6 @@ abstract class Worker
     protected function shutdown()
     {
         $this->before_shutdown();
-    }    
+    }
 
 }

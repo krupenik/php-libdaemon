@@ -8,7 +8,7 @@ class ExampleWorker extends Worker
     function after_construct() {
         $this->started_at = time();
     }
-    
+
     function run_cycle()
     {
         print (time() - $this->started_at) . "\n";
