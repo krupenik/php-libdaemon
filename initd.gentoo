@@ -1,0 +1,29 @@
+#!/sbin/runscript
+
+daemon=
+name=$(basename $daemon)
+pid=
+
+start() {
+  ebegin "Starting ${name}"
+  start-stop-daemon --start --pidfile $pid $daemon
+  eend $?
+}
+
+stop() {
+  ebegin "Stopping ${name}"
+  start-stop-daemon --stop --pidfile $pid
+  eend $?
+}
+
+reload() {
+  ebegin "Reloading ${name}"
+  start-stop-daemon --signal HUP --pidfile $pid
+  eend $?
+}
+
+reopen() {
+  ebegin "Reopening ${name} log files"
+  start-stop-daemon --signal USR1 --pidfile $pid
+  eend $?
+}

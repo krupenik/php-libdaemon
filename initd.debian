@@ -1,0 +1,31 @@
+#!/bin/sh
+
+daemon=
+name=$(basename $daemon)
+pid=
+
+. /lib/lsb/init-functions
+
+start() {
+  log_daemon_msg "Starting ${name}"
+  start-stop-daemon --start --pidfile $pid $daemon
+  log_end_msg $?
+}
+
+stop() {
+  log_daemon_msg "Stopping ${name}"
+  start-stop-daemon --stop --pidfile $pid
+  log_end_msg $?
+}
+
+reload() {
+  log_daemon_msg "Reloading ${name}"
+  start-stop-daemon --signal HUP --pidfile $pid
+  log_end_msg $?
+}
+
+reopen() {
+  log_daemon_msg "Reopening ${name} log files"
+  start-stop-daemon --signal USR1 --pidfile $pid
+  log_end_msg $?
+}
