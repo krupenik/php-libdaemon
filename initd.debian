@@ -3,6 +3,7 @@
 daemon=
 name=$(basename $daemon)
 pid=
+sleep_on_restart=0
 
 . /lib/lsb/init-functions
 
@@ -14,7 +15,7 @@ start() {
 
 stop() {
   log_daemon_msg "Stopping ${name}"
-  start-stop-daemon --stop --pidfile $pid
+  start-stop-daemon --stop --pidfile $pid --exec $daemon
   log_end_msg $?
 }
 
@@ -29,3 +30,23 @@ reopen() {
   start-stop-daemon --signal USR1 --pidfile $pid
   log_end_msg $?
 }
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop
+    sleep $sleep_on_restart
+    start
+    ;;
+  status)
+    status
+    ;;
+  *)
+  echo "Usage: $0 {start|stop|restart|status}"
+  exit 1
+esac
