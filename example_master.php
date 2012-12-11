@@ -1,3 +1,4 @@
+#! /usr/bin/env php
 <?php
 require_once "master.class.php";
 
@@ -24,5 +25,11 @@ class ExampleMaster extends Master
     }
 }
 
-$m = new ExampleMaster("./example.yml");
-$m->start();
+$options = getopt("c:h");
+
+if (!(isset($options["c"]) && file_exists($options["c"]))) {
+    die("Usage: ". $_SERVER["argv"][0] ." -c config_file\n");
+}
+
+$e = new ExampleMaster($options["c"]);
+$e->start();

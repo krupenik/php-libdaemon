@@ -1,7 +1,7 @@
 logfile: ./example.log
 pidfile: ./example.pid
 message: lol
-daemonize: false
+daemonize: true
 debug: true
 worker_class: ExampleWorker
 max_children: 2
