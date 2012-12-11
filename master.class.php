@@ -26,6 +26,8 @@ abstract class Master extends Daemon
                 $this->log("fork failed!");
             }
             elseif (0 == $pid) {
+                $this->open_std_files();
+
                 $worker = new $this->config["worker_class"]($this->create_worker_config());
                 $worker->start();
                 exit(0);

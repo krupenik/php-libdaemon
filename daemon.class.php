@@ -21,7 +21,7 @@ abstract class Daemon extends Worker
     {
         $this->configure();
         $this->detach();
-        $this->open_log();
+        $this->open_std_files();
 
         parent::start();
     }
@@ -47,7 +47,7 @@ abstract class Daemon extends Worker
 
         pcntl_signal(SIGHUP, array(&$this, "configure"));
         pcntl_signal(SIGINT, array(&$this, "stop"));
-        pcntl_signal(SIGUSR1, array(&$this, "open_log"));
+        pcntl_signal(SIGUSR1, array(&$this, "open_std_files"));
     }
 
     protected function after_configure() { }
@@ -76,25 +76,26 @@ abstract class Daemon extends Worker
             if (-1 == posix_setsid())
                 die("setsid failed");
 
-            fclose(STDIN);
-            fclose(STDOUT);
-            fclose(STDERR);
-
             file_put_contents($this->config["pidfile"], posix_getpid() . "\n");
         }
 
         $this->after_detach();
     }
 
-    protected function open_log()
+    protected function open_std_files()
     {
-        if ($this->_log) {
-            fclose($this->_log);
-        }
+        if (is_resource(STDOUT)) fclose(STDOUT);
+        if (is_resource(STDERR)) fclose(STDERR);
+        if (is_resource(STDIN))  fclose(STDIN);
+
         if ($this->config["daemonize"]) {
+            fopen("/dev/null", "r");
+            fopen($this->config["logfile"], "ab");
             $this->_log = fopen($this->config["logfile"], "ab");
         }
         else {
+            fopen("php://stdin", "r");
+            fopen("php://stdout", "ab");
             $this->_log = fopen("php://stderr", "ab");
         }
     }
