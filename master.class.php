@@ -58,7 +58,7 @@ abstract class Master extends Daemon
 
     protected function reap()
     {
-        if (0 < $pid = pcntl_waitpid(-1, $status, WNOHANG)) {
+        while (0 < $pid = pcntl_waitpid(-1, $status, WNOHANG)) {
             unset($this->children[$pid]);
         }
     }
