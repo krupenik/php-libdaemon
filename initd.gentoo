@@ -1,29 +1,19 @@
 #!/sbin/runscript
 
-daemon=
-name=$(basename $daemon)
-pid=
+command=
+name=$(basename $command)
+pidfile=
 
-start() {
-  ebegin "Starting ${name}"
-  start-stop-daemon --start --pidfile $pid $daemon
-  eend $?
-}
-
-stop() {
-  ebegin "Stopping ${name}"
-  start-stop-daemon --stop --pidfile $pid
-  eend $?
-}
+extra_started_commands="reload reopen"
 
 reload() {
   ebegin "Reloading ${name}"
-  start-stop-daemon --signal HUP --pidfile $pid
+  start-stop-daemon --signal HUP --pidfile $pidfile
   eend $?
 }
 
 reopen() {
   ebegin "Reopening ${name} log files"
-  start-stop-daemon --signal USR1 --pidfile $pid
+  start-stop-daemon --signal USR1 --pidfile $pidfile
   eend $?
 }
