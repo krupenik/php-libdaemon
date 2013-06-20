@@ -93,5 +93,8 @@ abstract class Daemon extends Worker
             fopen($this->config["logfile"], "ab");
             $this->_log = fopen($this->config["logfile"], "ab");
         }
+        else {
+            $this->_log = fopen("php://stderr", "ab");
+        }
     }
 }
