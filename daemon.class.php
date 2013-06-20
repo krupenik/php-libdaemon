@@ -84,19 +84,14 @@ abstract class Daemon extends Worker
 
     protected function open_std_files()
     {
-        if (is_resource(STDOUT)) fclose(STDOUT);
-        if (is_resource(STDERR)) fclose(STDERR);
-        if (is_resource(STDIN))  fclose(STDIN);
-
         if ($this->config["daemonize"]) {
+            if (is_resource(STDOUT)) fclose(STDOUT);
+            if (is_resource(STDERR)) fclose(STDERR);
+            if (is_resource(STDIN))  fclose(STDIN);
+
             fopen("/dev/null", "r");
             fopen($this->config["logfile"], "ab");
             $this->_log = fopen($this->config["logfile"], "ab");
-        }
-        else {
-            fopen("php://stdin", "r");
-            fopen("php://stdout", "ab");
-            $this->_log = fopen("php://stderr", "ab");
         }
     }
 }
